@@ -27,7 +27,7 @@ product_elements = driver.find_elements(By.CLASS_NAME, "andes-card")
 for index, product in enumerate(product_elements, start=1):
     if index > 49:
         break
-    
+
     try:
         # Localizar o título do produto dentro da div do produto usando CLASS_NAME
         title_element = product.find_element(By.CLASS_NAME, "poly-component__title")
@@ -35,5 +35,14 @@ for index, product in enumerate(product_elements, start=1):
         print(f"Produto {index}: {title}")
     except Exception as e:
         print(f"Erro ao capturar o título do produto {index}: {e}")
+
+    try:
+        price_str = product.find_element(By.CSS_SELECTOR, 'span.andes-money-amount__fraction').text.replace('.', '').replace(',', '.')
+        price = (price_str)
+        print(f"Preço do produto {index}: R$ {price}")
+    except Exception as e:
+        print(f"Erro no produto {index}: Preço não encontrado.")
+        price = None
+   
 
 driver.quit()
