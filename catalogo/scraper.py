@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-url = "https://www.mercadolivre.com.br/"
+url = "https://lista.mercadolivre.com.br/computador-gamer-i7-16gb-ssd-1tb"
 options = Options()
 options.add_argument("--start-maximized")
 
@@ -18,9 +18,9 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 driver.get(url)
 sleep(3)
 
-search_box = driver.find_element(By.ID, "cb1-edit")
-search_box.send_keys("Computador Gamer i7 16gb ssd 1tb")
-search_box.send_keys(Keys.RETURN)
+#search_box = driver.find_element(By.ID, "cb1-edit")
+#search_box.send_keys("Computador Gamer i7 16gb ssd 1tb")
+#search_box.send_keys(Keys.RETURN)
 
 WebDriverWait(driver, 10).until(
     EC.presence_of_all_elements_located((By.CLASS_NAME, "poly-component__title"))
