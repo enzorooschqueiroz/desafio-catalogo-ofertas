@@ -78,7 +78,7 @@ import environ
 import os
 
 env = environ.Env()
-environ.Env.rend_env()
+environ.Env.read_env()
 
 DATABASES = {
     'default': {
