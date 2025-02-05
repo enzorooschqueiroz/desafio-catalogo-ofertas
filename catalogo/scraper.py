@@ -15,7 +15,6 @@ options.add_argument("--start-maximized")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 driver.get(url)
-sleep(3)
 
 WebDriverWait(driver, 10).until(
     EC.presence_of_all_elements_located((By.CLASS_NAME, "andes-card"))
@@ -23,7 +22,6 @@ WebDriverWait(driver, 10).until(
 
 product_elements = driver.find_elements(By.CLASS_NAME, "andes-card")
 
-sleep(2)
 for index, product in enumerate(product_elements, start=1):
     if index == 1:
         continue
