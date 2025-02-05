@@ -30,12 +30,13 @@ for index, product in enumerate(product_elements, start=1):
     
     print("-" * 80)
     
-    link_element = driver.find_elements(By.CLASS_NAME, "poly-component__title")
-    if link_element:  # Verificar se há elementos na lista
-        link = link_element[0].get_attribute('href')  # Acessar o primeiro elemento da lista
+    try:
+        link_element = product.find_element(By.CLASS_NAME, "poly-component__title")  # Busca dentro do produto específico
+        link = link_element.get_attribute('href')
         print(f"Link do Produto {index}: {link}")
-    else:
+    except:
         print(f"Erro: Link do Produto {index} não encontrado.")
+
     
     try:
         # Localizar o título do produto dentro da div do produto usando CLASS_NAME
@@ -46,13 +47,12 @@ for index, product in enumerate(product_elements, start=1):
         print(f"Erro ao capturar o título do produto {index}: {e}")
 
     try:
-        # Capturar o preço atual
-        price_str = product.find_element(By.CLASS_NAME, 'andes-money-amount__fraction').text.replace('.', '').replace(',', '.')
-        price = price_str  # Armazenar como string formatada
+        price_element = product.find_element(By.CLASS_NAME, "poly-price__current")
+        price = price_element.find_element(By.CLASS_NAME, "andes-money-amount__fraction").text.replace('.', '').replace(',', '.')
         print(f"Preço Atual do produto {index}: R$ {price}")
     except Exception as e:
-        print(f"Erro no produto {index}: Preço Atual não encontrado.")
-        price = None
+        print(f"Erro ao capturar o preço atual do produto {index}: {e}")
+
 
     discount_percentage = None
     try:
@@ -62,22 +62,14 @@ for index, product in enumerate(product_elements, start=1):
     except Exception as e:
         discount_percentage = None
 
-    previous_price = None
-    try:
-        # Capturar o preço anterior
-        previous_price_str = product.find_element(By.CLASS_NAME, "andes-money-amount__fraction").text.strip().replace('.', '')  # Remover ponto
-        
-        # Verificar se há desconto, caso contrário, não exibe o preço anterior
-        if discount_percentage is not None:
-            previous_price = previous_price_str
-            print(f"Preço anterior do produto {index}: R$ {previous_price}")
-        else:
-            previous_price = None  # Não mostra o preço anterior se não houver desconto
 
-    except Exception as e:
-        print(f"Erro ao capturar o preço anterior do produto {index}: {e}")
+    try:
+        previous_price = product.find_element(By.CLASS_NAME, "andes-money-amount__fraction").text.strip()
+        print(f"Preço Anterior do produto {index}: R$ {previous_price}")
+    except:
         previous_price = None
-   
+        print(f"Preço Anterior do produto {index} não encontrado.")
+
     image_url = None
     try:
         image_element = product.find_element(By.CLASS_NAME, 'poly-component__picture')
@@ -88,10 +80,15 @@ for index, product in enumerate(product_elements, start=1):
     except Exception as e:
         print(f"Erro ao capturar a imagem do produto {index}: {e}")
 
-
-    
-
-    
+    try:
+        # Verificar se o ícone de entrega FULL está presente
+        delivery_icon = product.find_element(By.CSS_SELECTOR, 'svg[aria-label="FULL"]')
+        tipo_entrega = "Full"
+        print(f"Tipo de Entrega: {tipo_entrega}")
+    except Exception as e:
+        # Se o ícone FULL não for encontrado, é considerado Normal
+        tipo_entrega = "Normal"
+        print(f"Tipo de Entrega: {tipo_entrega}")
 
     print("-" * 80)
 
