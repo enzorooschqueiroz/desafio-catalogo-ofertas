@@ -1,5 +1,3 @@
-<!-- catalogo/templates/catalogo/listar_produtos.html -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,73 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Produtos</title>
     <style>
-        table {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-collapse: collapse;
+            background-color: #6F4E37;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+
+        .container {
+            display: flex;
+            margin-top: 70px;
+            height: calc(100vh - 70px);
         }
-        th {
-            background-color: #f2f2f2;
+
+        .sidebar {
+            width: 250px;
+            background-color: #ffefc8;
+            padding: 20px;
+            color: #6F4E37;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
         }
-        img {
-            max-width: 100px;
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+            overflow-y: auto;
+        }
+
+        .product-card {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.02);
+        }
+
+        .product-image {
+            width: 150px;
             height: auto;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+            color: #6F4E37;
+        }
+
+        .product-info p {
+            margin: 5px 0;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #D9534F;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .discount {
+            background-color: #D9534F;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-left: 8px;
+        }
+
+        .product-link {
+            text-decoration: none;
+            background-color: #6F4E37;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .product-link:hover {
+            background-color: #A67B5B;
         }
     </style>
 </head>
 <body>
-    <h1>Lista de Produtos</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Imagem</th>
-                <th>Nome</th>
-                <th>Preço</th>
-                <th>Parcelamento</th>
-                <th>Link</th>
-                <th>Preço sem Desconto</th>
-                <th>Desconto</th>
-                <th>Tipo de Entrega</th>
-                <th>Frete Grátis</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="navbar">Catálogo de Produtos</div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <h2>Filtros</h2>
+            <p>[Seção para filtros]</p>
+        </div>
+
+        <div class="content">
             {% for produto in produtos %}
-            <tr>
-                <td>
-                    {% if produto.imagem %}
-                        <img src="{{ produto.imagem }}" alt="{{ produto.nome }}">
-                    {% else %}
-                        Sem imagem
-                    {% endif %}
-                </td>
-                <td>{{ produto.nome }}</td>
-                <td>R$ {{ produto.preco }}</td>
-                <td>{{ produto.parcelamento }}</td>
-                <td><a href="{{ produto.link }}" target="_blank">Ver produto</a></td>
-                <td>
-                    {% if produto.preco_sem_desconto %}
-                        R$ {{ produto.preco_sem_desconto }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    {% if produto.percentual_desconto %}
-                        {{ produto.percentual_desconto }}%
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>{{ produto.tipo_entrega }}</td>
-                <td>{{ produto.frete_gratis|yesno:"Sim,Não" }}</td>
-            </tr>
+            <div class="product-card">
+                <img class="product-image" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
+                <div class="product-info">
+                    <h3>{{ produto.nome }}</h3>
+                    <p>
+                        <span class="price">R$ {{ produto.preco }}</span>
+                        {% if produto.preco_sem_desconto %}
+                        <span class="old-price">R$ {{ produto.preco_sem_desconto }}</span>
+                        {% endif %}
+                        {% if produto.percentual_desconto %}
+                        <span class="discount">{{ produto.percentual_desconto }}% OFF</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Parcelamento:</strong> {{ produto.parcelamento }}</p>
+                    <p><strong>Tipo de Entrega:</strong> {{ produto.tipo_entrega }}</p>
+                    <p><strong>Frete Grátis:</strong> {{ produto.frete_gratis|yesno:"Sim,Não" }}</p>
+                    <a class="product-link" href="{{ produto.link }}" target="_blank">Ver produto</a>
+                </div>
+            </div>
             {% endfor %}
-        </tbody>
-    </table>
+        </div>
+    </div>
 </body>
 </html>
