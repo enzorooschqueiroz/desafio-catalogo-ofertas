@@ -1,5 +1,21 @@
 from django.db import models
 
+class ProdutoManager(models.Manager):
+    def com_frete_gratis(self):
+        return self.filter(frete_gratis=True)
+
+    def entregues_pelo_full(self):
+        return self.filter(tipo_entrega="Full")
+
+    def maior_preco(self):
+        return self.order_by("-preco")
+
+    def menor_preco(self):
+        return self.order_by("preco")
+
+    def maior_desconto(self):
+        return self.order_by("-percentual_desconto")
+
 class Produto(models.Model):
     imagem = models.URLField(verbose_name="Imagem do Produto")
     nome = models.CharField(max_length=500, verbose_name="Nome do Produto")  # Aumentado

@@ -146,10 +146,14 @@
     <div class="container">
         <div class="sidebar">
             <h2>Filtros</h2>
-            <p>[Seção para filtros]</p>
+            <button class="filter-button" onclick="filtrarProdutos('frete_gratis')">Frete Grátis</button>
+            <button class="filter-button" onclick="filtrarProdutos('full')">Entrega Full</button>
+            <button class="filter-button" onclick="filtrarProdutos('maior_preco')">Maior Preço</button>
+            <button class="filter-button" onclick="filtrarProdutos('menor_preco')">Menor Preço</button>
+            <button class="filter-button" onclick="filtrarProdutos('maior_desconto')">Maior Desconto</button>
         </div>
 
-        <div class="content">
+        <div class="content" id="product-list">
             {% for produto in produtos %}
             <div class="product-card">
                 <img class="product-image" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
@@ -173,5 +177,17 @@
             {% endfor %}
         </div>
     </div>
+
+    <script>
+        function filtrarProdutos(filtro) {
+            fetch(`/produtos/?filtro=${filtro}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("product-list").innerHTML = data;
+                })
+                .catch(error => console.error("Erro ao buscar produtos:", error));
+        }
+    </script>
+    
 </body>
 </html>
