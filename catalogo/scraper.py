@@ -10,16 +10,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Adiciona o diretório raiz do projeto ao PYTHONPATH
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Configuração do Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from catalogo.models import Produto  # Importe o modelo Produto
+from catalogo.models import Produto 
 
-# Configuração do Selenium
 url = "https://lista.mercadolivre.com.br/computador-gamer-i7-16gb-ssd-1tb"
 options = Options()
 options.add_argument("--start-maximized")
@@ -27,24 +24,20 @@ options.add_argument("--start-maximized")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 driver.get(url)
 
-# Aguarda os elementos serem carregados
 WebDriverWait(driver, 10).until(
     EC.presence_of_all_elements_located((By.CLASS_NAME, "andes-card"))
 )
 
-# Coleta os elementos dos produtos
 product_elements = driver.find_elements(By.CLASS_NAME, "andes-card")
 
 for index, product in enumerate(product_elements, start=1):
     if index == 1:
-        continue  # Pula o primeiro produto (pode ser um anúncio)
-
+        continue  
     if index > 5:
-        break  # Limita a coleta a 50 produtos
+        break  
 
     print("-" * 80)
 
-    # Coleta dos dados
     try:
         link_element = product.find_element(By.CLASS_NAME, "poly-component__title")
         link = link_element.get_attribute('href')

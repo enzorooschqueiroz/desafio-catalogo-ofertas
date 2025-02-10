@@ -21,7 +21,7 @@ class Produto(models.Model):
     nome = models.CharField(max_length=500, verbose_name="Nome do Produto")  # Aumentado
     preco = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Preço do Produto")
     parcelamento = models.CharField(max_length=1000, blank=True, null=True, verbose_name="Opção de Parcelamento")  # Aumentado
-    link = models.CharField(max_length=1000)  # Aumentado
+    link = models.CharField(max_length=1000)  
     preco_sem_desconto = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, verbose_name="Preço sem Desconto")
     percentual_desconto = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, verbose_name="Percentual de Desconto")
     tipo_entrega = models.CharField(max_length=100, choices=[("Full", "Full"), ("Normal", "Normal")], verbose_name="Tipo de Entrega")  # Aumentado
