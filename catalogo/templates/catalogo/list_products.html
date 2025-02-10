@@ -152,29 +152,31 @@
             <button class="filter-button" onclick="filtrarProdutos('menor_preco')">Menor Preço</button>
             <button class="filter-button" onclick="filtrarProdutos('maior_desconto')">Maior Desconto</button>
         </div>
-
-        <div class="content" id="product-list">
-            {% for produto in produtos %}
-            <div class="product-card">
-                <img class="product-image" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
-                <div class="product-info">
-                    <h3>{{ produto.nome }}</h3>
-                    <p>
-                        <span class="price">R$ {{ produto.preco }}</span>
-                        {% if produto.preco_sem_desconto %}
-                        <span class="old-price">R$ {{ produto.preco_sem_desconto }}</span>
-                        {% endif %}
-                        {% if produto.percentual_desconto %}
-                        <span class="discount">{{ produto.percentual_desconto }}% OFF</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Parcelamento:</strong> {{ produto.parcelamento }}</p>
-                    <p><strong>Tipo de Entrega:</strong> {{ produto.tipo_entrega }}</p>
-                    <p><strong>Frete Grátis:</strong> {{ produto.frete_gratis|yesno:"Sim,Não" }}</p>
-                    <a class="product-link" href="{{ produto.link }}" target="_blank">Ver produto</a>
+        
+        <div class="content">
+            <div id="product-list" class="product-container">
+                {% for produto in produtos %}
+                <div class="product-card">
+                    <img class="product-image" src="{{ produto.imagem }}" alt="{{ produto.nome }}">
+                    <div class="product-info">
+                        <h3>{{ produto.nome }}</h3>
+                        <p>
+                            <span class="price">R$ {{ produto.preco }}</span>
+                            {% if produto.preco_sem_desconto %}
+                            <span class="old-price">R$ {{ produto.preco_sem_desconto }}</span>
+                            {% endif %}
+                            {% if produto.percentual_desconto %}
+                            <span class="discount">{{ produto.percentual_desconto }}% OFF</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Parcelamento:</strong> {{ produto.parcelamento }}</p>
+                        <p><strong>Tipo de Entrega:</strong> {{ produto.tipo_entrega }}</p>
+                        <p><strong>Frete Grátis:</strong> {{ produto.frete_gratis|yesno:"Sim,Não" }}</p>
+                        <a class="product-link" href="{{ produto.link }}" target="_blank">Ver produto</a>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 
@@ -184,6 +186,7 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById("product-list").innerHTML = data;
+                    document.getElementById("product-list").classList.add("product-container");
                 })
                 .catch(error => console.error("Erro ao buscar produtos:", error));
         }

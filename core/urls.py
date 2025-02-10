@@ -22,6 +22,6 @@ from catalogo.views import list_products
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", list_products, name="list_products"),  # Página inicial
-    path("produtos/", list_products, name="list_products"),  # 🔥 Adicionando a rota correta
+    path("", list_products, name="list_products"),  
+    path("produtos/", list_products, name="list_products"),  
 ]
