@@ -33,7 +33,7 @@ product_elements = driver.find_elements(By.CLASS_NAME, "andes-card")
 for index, product in enumerate(product_elements, start=1):
     if index == 1:
         continue  
-    if index > 5:
+    if index > 49:
         break  
 
     print("-" * 80)
